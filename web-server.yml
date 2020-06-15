@@ -16,19 +16,19 @@ Resources:
       VpcId:
         Fn::ImportValue:
           !Sub "${Environment}-VPC"
-        SecurityGroupIngress:
-          - SourceSecurityGroupId:
-              Fn::ImportValue:
-                !Sub "${Environment}-LoadBalancerSecurityGroup"
-            FromPort: 80
-            ToPort: 80
-            IpProtocol: tcp
+      SecurityGroupIngress:
+        - SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${Environment}-LoadBalancerSecurityGroup"
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
   WebServer:
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-032598fcc7e9d1c7a # Amazon Linux 2 AMI
       InstanceType: t3.micro
-      SecurityGroups:
+      SecurityGroupIds:
         - !Ref WebServerSecurityGroup
       UserData:
         Fn::Base64: |
