@@ -140,6 +140,34 @@ Resources:
     Properties:
       AllocationId: !GetAtt EIPC.AllocationId
       SubnetId: !Ref PublicSubnetC
+  PublicSubnetRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+      VpcId: !Ref VPC
+  PrivateSubnetARouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+      VpcId: !Ref VPC
+  PrivateSubnetBRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+      VpcId: !Ref VPC
+  PrivateSubnetCRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+      VpcId: !Ref VPC
 Outputs:
   VPC:
     Description: "The VPC"
