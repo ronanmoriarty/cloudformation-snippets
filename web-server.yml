@@ -44,3 +44,25 @@ Resources:
           sudo systemctl start httpd
           sudo systemctl enable amazon-ssm-agent
           sudo systemctl start amazon-ssm-agent
+  IamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: web-server-instance-profile
+      Roles:
+        - !Ref Role
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: "Web server role - initially just for SSM access"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      RoleName: !Sub ${Environment}-web-server-role
