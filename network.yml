@@ -184,6 +184,12 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnetARouteTable
       SubnetId: !Ref PrivateSubnetA
+  NatGatewayPrivateSubnetARoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NATGatewayA
+      DestinationCidrBlock: 0.0.0.0/0
+      RouteTableId: !Ref PrivateSubnetARouteTable
   PrivateSubnetBRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -198,6 +204,12 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnetBRouteTable
       SubnetId: !Ref PrivateSubnetB
+  NatGatewayPrivateSubnetBRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NATGatewayB
+      DestinationCidrBlock: 0.0.0.0/0
+      RouteTableId: !Ref PrivateSubnetBRouteTable
   PrivateSubnetCRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -212,6 +224,12 @@ Resources:
     Properties:
       RouteTableId: !Ref PrivateSubnetCRouteTable
       SubnetId: !Ref PrivateSubnetC
+  NatGatewayPrivateSubnetCRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      NatGatewayId: !Ref NATGatewayC
+      DestinationCidrBlock: 0.0.0.0/0
+      RouteTableId: !Ref PrivateSubnetCRouteTable
 Outputs:
   VPC:
     Description: "The VPC"
