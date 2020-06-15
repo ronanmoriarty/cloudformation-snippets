@@ -23,3 +23,17 @@ Resources:
             FromPort: 80
             ToPort: 80
             IpProtocol: tcp
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-032598fcc7e9d1c7a # Amazon Linux 2 AMI
+      InstanceType: t3.micro
+      SecurityGroups:
+        - !Ref WebServerSecurityGroup
+      UserData:
+        Fn::Base64: |
+          yum update -y
+          yum install httpd -y
+          echo "<html><body><h1>test web server</h1></body></html>" > /var/www/html/index.html
+          systemctl enable httpd
+          systemctl start httpd
