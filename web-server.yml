@@ -78,3 +78,13 @@ Resources:
       VpcId:
         Fn::ImportValue:
           !Sub ${Environment}-VPC
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+        DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+        LoadBalancerArn:
+          Fn::ImportValue: !Sub "${Environment}-LoadBalancer"
+        Port: 80
+        Protocol: HTTP
