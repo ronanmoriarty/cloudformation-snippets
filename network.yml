@@ -110,3 +110,14 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       Type: application
+Outputs:
+  VPC:
+    Description: "The VPC"
+    Value: !Ref VPC
+    Export:
+      Name: !Sub "${AWS::StackName}-VPC"
+  LoadBalancer:
+    Description: "The public load balancer"
+    Value: !Ref LoadBalancer
+    Export:
+      Name: !Sub "${AWS::StackName}-LoadBalancer"
