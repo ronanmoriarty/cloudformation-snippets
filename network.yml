@@ -144,6 +144,8 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       Tags:
+        - Key: Name
+          Value: !Sub ${Environment}PublicSubnetRouteTable
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
@@ -151,6 +153,8 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       Tags:
+        - Key: Name
+          Value: !Sub ${Environment}PrivateSubnetARouteTable
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
@@ -158,6 +162,8 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       Tags:
+        - Key: Name
+          Value: !Sub ${Environment}PrivateSubnetBRouteTable
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
@@ -165,6 +171,8 @@ Resources:
     Type: AWS::EC2::RouteTable
     Properties:
       Tags:
+        - Key: Name
+          Value: !Sub ${Environment}PrivateSubnetCRouteTable
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
