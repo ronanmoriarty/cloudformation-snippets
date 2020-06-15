@@ -67,3 +67,14 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
       RoleName: !Sub ${Environment}-web-server-role
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      Targets:
+        - Id: !Ref WebServer
+          Port: 80
+      VpcId:
+        Fn::ImportValue:
+          !Sub ${Environment}-VPC
