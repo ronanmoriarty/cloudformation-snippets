@@ -171,3 +171,33 @@ Outputs:
     Value: !Ref NATGatewayC
     Export:
       Name: !Sub "${AWS::StackName}-NATGatewayC"
+  PublicSubNetA:
+    Description: "The public subnet in AZ a"
+    Value: !Ref PublicSubnetA
+    Export:
+      Name: !Sub "${AWS::StackName}-PublicSubnetA"
+  PrivateSubNetA:
+    Description: "The private subnet in AZ a"
+    Value: !Ref PrivateSubnetA
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnetA"
+  PublicSubNetB:
+    Description: "The public subnet in AZ b"
+    Value: !Ref PublicSubnetB
+    Export:
+      Name: !Sub "${AWS::StackName}-PublicSubnetB"
+  PrivateSubNetB:
+    Description: "The private subnet in AZ b"
+    Value: !Ref PrivateSubnetB
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnetB"
+  PublicSubNetC:
+    Description: "The public subnet in AZ c"
+    Value: !Ref PublicSubnetC
+    Export:
+      Name: !Sub "${AWS::StackName}-PublicSubnetC"
+  PrivateSubNetC:
+    Description: "The private subnet in AZ c"
+    Value: !Ref PrivateSubnetC
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateSubnetC"

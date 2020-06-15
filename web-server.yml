@@ -30,6 +30,9 @@ Resources:
       InstanceType: t3.micro
       SecurityGroupIds:
         - !Ref WebServerSecurityGroup
+      SubnetId:
+        Fn::ImportValue:
+          !Sub "${Environment}-PrivateSubnetA"
       UserData:
         Fn::Base64: |
           yum update -y
