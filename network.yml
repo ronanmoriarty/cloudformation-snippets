@@ -149,6 +149,21 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicSubnetRouteTable
+      SubnetId: !Ref PublicSubnetA
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicSubnetRouteTable
+      SubnetId: !Ref PublicSubnetB
+  PublicSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PublicSubnetRouteTable
+      SubnetId: !Ref PublicSubnetC
   PrivateSubnetARouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -158,6 +173,11 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetARouteTable
+      SubnetId: !Ref PrivateSubnetA
   PrivateSubnetBRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -167,6 +187,11 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetBRouteTable
+      SubnetId: !Ref PrivateSubnetB
   PrivateSubnetCRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
@@ -176,6 +201,11 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       VpcId: !Ref VPC
+  PrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetCRouteTable
+      SubnetId: !Ref PrivateSubnetC
 Outputs:
   VPC:
     Description: "The VPC"
