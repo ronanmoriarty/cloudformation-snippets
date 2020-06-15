@@ -151,6 +151,11 @@ Outputs:
     Value: !Ref LoadBalancer
     Export:
       Name: !Sub "${AWS::StackName}-LoadBalancer"
+  LoadBalancerSecurityGroup:
+    Description: "The public load balancer security group"
+    Value: !Ref LoadBalancerSecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-LoadBalancerSecurityGroup"
   NATGatewayA:
     Description: "The NAT Gateway in AZ a"
     Value: !Ref NATGatewayA
