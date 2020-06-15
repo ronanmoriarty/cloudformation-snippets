@@ -46,3 +46,30 @@ Resources:
       Tags:
         - Key: Environment
           Value: !Ref Environment
+  PrivateSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: eu-west-2a
+      CidrBlock: 192.168.4.0/24
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+  PrivateSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: eu-west-2b
+      CidrBlock: 192.168.5.0/24
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+  PrivateSubnetC:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: eu-west-2c
+      CidrBlock: 192.168.6.0/24
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
