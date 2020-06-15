@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Web server"
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - development
+      - test
+      - staging
+      - production
+Resources:
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for web servers"
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${Environment}-VPC"
+        SecurityGroupIngress:
+          - SourceSecurityGroupId:
+              Fn::ImportValue:
+                !Sub "${Environment}-LoadBalancerSecurityGroup"
+            FromPort: 80
+            ToPort: 80
+            IpProtocol: tcp
