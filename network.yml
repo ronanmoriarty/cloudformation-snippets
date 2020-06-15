@@ -89,7 +89,7 @@ Resources:
       Tags:
         - Key: Environment
           Value: !Ref Environment
-  InternetGatewayAttachment:
+  VPCGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       InternetGatewayId: !Ref InternetGateway
@@ -110,6 +110,36 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       Type: application
+  EIPA:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    DependsOn: VPCGatewayAttachment
+  NATGatewayA:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt EIPA.AllocationId
+      SubnetId: !Ref PublicSubnetA
+  EIPB:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    DependsOn: VPCGatewayAttachment
+  NATGatewayB:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt EIPB.AllocationId
+      SubnetId: !Ref PublicSubnetB
+  EIPC:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+    DependsOn: VPCGatewayAttachment
+  NATGatewayC:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt EIPC.AllocationId
+      SubnetId: !Ref PublicSubnetC
 Outputs:
   VPC:
     Description: "The VPC"
@@ -121,3 +151,18 @@ Outputs:
     Value: !Ref LoadBalancer
     Export:
       Name: !Sub "${AWS::StackName}-LoadBalancer"
+  NATGatewayA:
+    Description: "The NAT Gateway in AZ a"
+    Value: !Ref NATGatewayA
+    Export:
+      Name: !Sub "${AWS::StackName}-NATGatewayA"
+  NATGatewayB:
+    Description: "The NAT Gateway in AZ b"
+    Value: !Ref NATGatewayB
+    Export:
+      Name: !Sub "${AWS::StackName}-NATGatewayB"
+  NATGatewayC:
+    Description: "The NAT Gateway in AZ c"
+    Value: !Ref NATGatewayC
+    Export:
+      Name: !Sub "${AWS::StackName}-NATGatewayC"
