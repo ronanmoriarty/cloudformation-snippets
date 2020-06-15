@@ -35,8 +35,12 @@ Resources:
           !Sub "${Environment}-PrivateSubnetA"
       UserData:
         Fn::Base64: |
-          yum update -y
-          yum install httpd -y
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install httpd -y
+          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
           echo "<html><body><h1>test web server</h1></body></html>" > /var/www/html/index.html
-          systemctl enable httpd
-          systemctl start httpd
+          sudo systemctl enable httpd
+          sudo systemctl start httpd
+          sudo systemctl enable amazon-ssm-agent
+          sudo systemctl start amazon-ssm-agent
