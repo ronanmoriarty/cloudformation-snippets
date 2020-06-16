@@ -1,0 +1,90 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Application server"
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues:
+      - development
+      - test
+      - staging
+      - production
+Resources:
+  SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for application servers"
+      VpcId:
+        Fn::ImportValue:
+          !Sub "${Environment}-VPC"
+      SecurityGroupIngress:
+        - SourceSecurityGroupId:
+            Fn::ImportValue:
+              !Sub "${Environment}-PrivateLoadBalancerSecurityGroup"
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+  ApplicationServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-032598fcc7e9d1c7a # Amazon Linux 2 AMI
+      InstanceType: t3.micro
+      IamInstanceProfile: !Ref IamInstanceProfile
+      SecurityGroupIds:
+        - !Ref SecurityGroup
+      SubnetId:
+        Fn::ImportValue:
+          !Sub "${Environment}-PrivateSubnetA"
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install httpd -y
+          sudo yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm
+          echo "<html><body><h1>test application server</h1></body></html>" > /var/www/html/index.html
+          sudo systemctl enable httpd
+          sudo systemctl start httpd
+          sudo systemctl enable amazon-ssm-agent
+          sudo systemctl start amazon-ssm-agent
+  IamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: application-server-instance-profile
+      Roles:
+        - !Ref Role
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+              - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: "Application server role - initially just for SSM access"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      RoleName: !Sub ${Environment}-application-server-role
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Port: 80
+      Protocol: HTTP
+      Targets:
+        - Id: !Ref ApplicationServer
+          Port: 80
+      VpcId:
+        Fn::ImportValue:
+          !Sub ${Environment}-VPC
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+        DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+        LoadBalancerArn:
+          Fn::ImportValue: !Sub "${Environment}-PrivateLoadBalancer"
+        Port: 80
+        Protocol: HTTP
