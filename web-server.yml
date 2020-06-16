@@ -19,7 +19,7 @@ Resources:
       SecurityGroupIngress:
         - SourceSecurityGroupId:
             Fn::ImportValue:
-              !Sub "${Environment}-LoadBalancerSecurityGroup"
+              !Sub "${Environment}-PublicLoadBalancerSecurityGroup"
           FromPort: 80
           ToPort: 80
           IpProtocol: tcp
@@ -85,6 +85,6 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref TargetGroup
         LoadBalancerArn:
-          Fn::ImportValue: !Sub "${Environment}-LoadBalancer"
+          Fn::ImportValue: !Sub "${Environment}-PublicLoadBalancer"
         Port: 80
         Protocol: HTTP

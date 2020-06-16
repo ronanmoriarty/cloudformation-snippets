@@ -73,10 +73,10 @@ Resources:
       Tags:
         - Key: Environment
           Value: !Ref Environment
-  LoadBalancerSecurityGroup:
+  PublicLoadBalancerSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: "Security group for load balancer"
+      GroupDescription: "Security group for public load balancer"
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - CidrIp: 0.0.0.0/0
@@ -94,14 +94,14 @@ Resources:
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
-  LoadBalancer:
+  PublicLoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       IpAddressType: ipv4
       Name: !Sub ${Environment}-my-alb
       Scheme: internet-facing
       SecurityGroups:
-        - !Ref LoadBalancerSecurityGroup
+        - !Ref PublicLoadBalancerSecurityGroup
       Subnets:
         - !Ref PublicSubnetA
         - !Ref PublicSubnetB
@@ -236,16 +236,16 @@ Outputs:
     Value: !Ref VPC
     Export:
       Name: !Sub "${AWS::StackName}-VPC"
-  LoadBalancer:
+  PublicLoadBalancer:
     Description: "The public load balancer"
-    Value: !Ref LoadBalancer
+    Value: !Ref PublicLoadBalancer
     Export:
-      Name: !Sub "${AWS::StackName}-LoadBalancer"
-  LoadBalancerSecurityGroup:
+      Name: !Sub "${AWS::StackName}-PublicLoadBalancer"
+  PublicLoadBalancerSecurityGroup:
     Description: "The public load balancer security group"
-    Value: !Ref LoadBalancerSecurityGroup
+    Value: !Ref PublicLoadBalancerSecurityGroup
     Export:
-      Name: !Sub "${AWS::StackName}-LoadBalancerSecurityGroup"
+      Name: !Sub "${AWS::StackName}-PublicLoadBalancerSecurityGroup"
   NATGatewayA:
     Description: "The NAT Gateway in AZ a"
     Value: !Ref NATGatewayA
