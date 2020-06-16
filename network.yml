@@ -110,6 +110,32 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
       Type: application
+  PrivateLoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for private load balancer"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - CidrIp: 192.168.0.0/16
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+  PrivateLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: !Sub ${Environment}-my-private-alb
+      Scheme: internal
+      SecurityGroups:
+        - !Ref PrivateLoadBalancerSecurityGroup
+      Subnets:
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetB
+        - !Ref PrivateSubnetC
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+      Type: application
   EIPA:
     Type: AWS::EC2::EIP
     Properties:
@@ -246,6 +272,16 @@ Outputs:
     Value: !Ref PublicLoadBalancerSecurityGroup
     Export:
       Name: !Sub "${AWS::StackName}-PublicLoadBalancerSecurityGroup"
+  PrivateLoadBalancer:
+    Description: "The private load balancer"
+    Value: !Ref PrivateLoadBalancer
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateLoadBalancer"
+  PrivateLoadBalancerSecurityGroup:
+    Description: "The private load balancer security group"
+    Value: !Ref PrivateLoadBalancerSecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-PrivateLoadBalancerSecurityGroup"
   NATGatewayA:
     Description: "The NAT Gateway in AZ a"
     Value: !Ref NATGatewayA
